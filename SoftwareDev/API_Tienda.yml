@@ -1,0 +1,131 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: RESTTienda
+  description: API_ServiciosTienda
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/CEGONCA/RESTTienda/1.0
+    
+paths:
+  /products:
+    summary: Operaciones CRUD
+    description: Operaciones CRUD para Products
+    get:
+      summary: Obtiene los productos registrados
+      description: Obtiene los productos registrados
+      operationId: getProducts
+      parameters:
+      - name: ordenar
+        in: query
+        description: The sort of the returned list
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        "200":
+          description: Catalogo de productos obtenido correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "4XX":
+          description: Bad Request
+    post:
+      summary: Registra a un nuevo producto
+      description: Registra a un nuevo producto
+      operationId: createProduct
+      requestBody:
+        description: El nuevo producto a agregar
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Product'
+      responses:
+        "201":
+          description: Creación de Producto
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "4XX":
+          description: Bad Request
+        "5XX":
+          description: Internal Server Error
+        default:
+          description: Success
+  /products/{id}:
+    delete:
+      summary: Borra el producto de la BD por ID
+      description: Borra el producto de la BD por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Borrado exitoso
+        "4XX":
+        
+          description: Bad Request
+        "5XX":
+          description: Internal Server Error
+    put:
+      summary: Actualiza a un producto por su ID
+      description: Actualiza a un producto por su ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: Actualización exitosa
+        "4XX":
+          description: Bad Request
+        "5XX":
+          description: Internal Server Error
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        base_unit:
+          type: number
+          format: decimal
+        category:
+          type: string
+        price:
+          type: number
+          format: decimal
