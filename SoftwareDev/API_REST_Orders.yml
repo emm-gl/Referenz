@@ -1,0 +1,132 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: REST_Order
+  description: API_REST_Order
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/CEGONCA/REST_Order/1.0
+    
+paths:
+  /orders:
+    summary: Operaciones CRUD
+    description: Operaciones CRUD para Products
+    get:
+      summary: Obtiene los productos registrados
+      description: Obtiene los productos registrados
+      operationId: getProducts
+      parameters:
+      - name: ordenar
+        in: query
+        description: The sort of the returned list
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        "200":
+          description: Catalogo de productos obtenido correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "4XX":
+          description: Bad Request
+    post:
+      summary: Registra una nueva orden en la DB
+      description: Registra una nueva orden en la DB
+      operationId: createOrder
+      requestBody:
+        description: La nueva orden a agregar
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Order'
+      responses:
+        "201":
+          description: Creación de Orden correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "4XX":
+          description: Bad Request
+        "5XX":
+          description: Internal Server Error
+        default:
+          description: Success
+  /orders/{id_order}:
+    delete:
+      summary: Borra la orden DB por id_order
+      description: Borra la orden DB por id_order
+      parameters:
+        - in: path
+          name: id_order
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Borrado exitoso
+        "4XX":
+        
+          description: Bad Request
+        "5XX":
+          description: Internal Server Error
+    put:
+      summary: Actualiza una orden por su id_order
+      description: Actualiza una orden por su id_order
+      parameters:
+        - in: path
+          name: id_order
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: Actualización exitosa
+        "4XX":
+          description: Bad Request
+        "5XX":
+          description: Internal Server Error
+    
+components:
+  schemas:
+    Order:
+      type: object
+      properties:
+        id_order:
+          type: integer
+          format: int64
+        customer_id:
+          type: integer
+          format: int64
+        customer_phone:
+          type: integer
+          format: int64
+        customer_name:
+          type: string
+        order_date:
+          type: string
