@@ -59,7 +59,7 @@
 <body>
     <form method="POST" action="{{ url_for('clientes') }}">
         <h1>Ingresa tus datos</h1>
-        
+
         <label for="id">ID:</label>
         <input type="text" id="id" name="id" required>
 
@@ -70,10 +70,7 @@
         <input type="text" id="direccion" name="direccion" required>
 
         <input type="submit" value="Enviar">
-    </form>
-    <div>
-        <h1> </ h1>
         <p><a href="{{ url_for('index') }}">Home</a></p>
-    </div>
+    </form>
 </body>
 </html>

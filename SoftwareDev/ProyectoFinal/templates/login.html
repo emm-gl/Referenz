@@ -9,14 +9,13 @@
     <title>Login</title>
 
     <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.1/css/bulma.min.css">
-
 </head>
 
 <body>
     <section class="section">
         <div class="columns">
             <div class="column is-one-third is-offset-one-third">
-                <h1 class="is-size-1">Bienvenido</h1>
+                <h1 class="is-size-1">Bienvenido Tiendero</h1>
                 <form action="{{url_for('hacer_login')}}" method="post">
                     <label for="correo">Correo</label>
                     <div class="control">
@@ -38,17 +37,14 @@
                         <li>{{ mensaje }}</li>
                         {% endfor %}
                         {% endif %}
-                        {% endwith %}
+                        {% endwith %} 
                     </div>
+                    <p><a href="{{ url_for('index') }}">Home</a></p>
                 </form>
+                    
             </div>
+            
         </div>
     </section>
-    <div>
-        <h1> </ h1>
-        <p><a href="{{ url_for('index') }}">Home</a></p>
-    </div>
-
 </body>
-
 </html>

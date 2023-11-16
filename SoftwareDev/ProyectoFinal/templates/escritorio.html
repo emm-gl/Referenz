@@ -8,21 +8,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escritorio</title>
 
-    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.1/css/bulma.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 1000px;
+        }
+    
+        a{
+            margin-right: 85px;
+        }
+        
+        p{
+            margin-bottom:50px;
+        }
+    </style>
 </head>
 
 <body>
-    <section class="section">
-        <div class="columns">
-            <div class="column is-one-third is-offset-one-third">
-                Hola <strong>{{session["usuario"]}}</strong>
-                <p>Aquí se puede descargar la orden de tus pedidos en formato *.csv</p>
-                <a href="{{url_for('index')}}">Salir</a>
-            </div>
-        </div>
-    </section>
-
+    <form action="/GetCSV/" method="post">
+        <h2>Hola <strong>{{session["usuario"]}}</strong></h2>
+        <p>Descarga tus ordenes en formato *.csv para que las proceses:</p>
+        <a href="{{url_for('index')}}">Home</a>
+        <button name="CSVBtn" type="submit">Descargar *.csv</button>
+    </form>
 </body>
 
 </html>
