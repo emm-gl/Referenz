@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for,session,jsonify, flash
+from datetime import datetime
 import requests
+import os
+import pandas as pd
 from datetime import datetime
 
 app = Flask(__name__)
@@ -13,6 +16,7 @@ BACKENDLESS_URL = 'https://api.backendless.com/69DA66B9-D1A8-C396-FF6B-10897D65A
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/clientes', methods=['GET', 'POST'])
 def clientes():
@@ -44,8 +48,8 @@ def productos():
 
     return render_template('productos.html', productos=productos)
 
-#################################################################
-# Protegida. Solo pueden entrar los que han iniciado sesión
+
+# Página Protegida. Solo pueden entrar los que han iniciado sesión, en este caso el tendero
 @app.route("/escritorio")
 def escritorio():
     return render_template("escritorio.html")
@@ -77,21 +81,20 @@ def logout():
     session.pop("usuario", None)
     return redirect("/login")
 
-"""
-# Un "middleware" que se ejecuta antes de responder a cualquier ruta. Aquí verificamos si el usuario ha iniciado sesión
-@app.before_request
-def antes_de_cada_peticion():
-    ruta = request.path
-    # Si no ha iniciado sesión y no quiere ir a algo relacionado al login, lo redireccionamos al login
-    if not 'usuario' in session and ruta != "/login" and ruta != "/hacer_login" and ruta != "/logout" and not ruta.startswith("/static"):
-        flash("Inicia sesión para continuar")
-        return redirect("/login")
-    # Si ya ha iniciado, no hacemos nada, es decir lo dejamos pasar
-"""
+#Descargar CSV
+@app.route("/GetCSV/", methods=['POST'])
+def getCSV():
+    forward_message = "getting CSV..."
+    print(forward_message)
 
+    fecha_actual = datetime.now().date()
+    fecha_corta = fecha_actual.strftime('%Y-%m-%d')
 
-
-
+    CSV_path = os.path.join(os.path.expanduser("~"), "Downloads") + '\Orders_' + fecha_corta +'.csv'
+    response = requests.get(BACKENDLESS_URL + 'Ordenes')
+    df_ordenes = pd.DataFrame(response.json())
+    df_ordenes.to_csv(CSV_path, index = False)
+    return redirect("/login")
 
 
 def obtener_cliente(user_id):
@@ -120,10 +123,6 @@ def create_orden(productos, id_cliente):
                     '___class': 'Ordenes'
                 }
         response = requests.post(BACKENDLESS_URL + 'Ordenes', json=order)
-
-def get_orders():
-    response = requests.get(BACKENDLESS_URL + 'Ordenes')
-    return response.json()
 
 
 
